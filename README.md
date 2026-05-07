@@ -42,7 +42,7 @@ DevCard é uma aplicação mobile desenvolvida com Expo e React Native que facil
 - Botão "Criar meu cartão" que navega para a tela de cadastro
 
 **Screenshot:**
-![DevCard Welcome Screen](assets\images\screenshots\ExpoGoHome.jpg)
+![DevCard Welcome Screen](assets/images/screenshots/ExpoGoHome.jpg)
 
 ---
 
@@ -66,7 +66,7 @@ DevCard é uma aplicação mobile desenvolvida com Expo e React Native que facil
 - Anos de experiência deve ser um número positivo
 
 **Screenshot:**
-![DevCard Registration Screen](assets\images\screenshots\ExpoGoCadastro.jpg)
+![DevCard Registration Screen](assets/images/screenshots/ExpoGoCadastro.jpg)
 
 ---
 
@@ -98,7 +98,7 @@ DevCard é uma aplicação mobile desenvolvida com Expo e React Native que facil
 - Compartilhar cartão
 
 **Screenshot:**
-![DevCard Preview Screen](assets\images\screenshots\ExpoGoCard.jpg)
+![DevCard Preview Screen](assets/images/screenshots/ExpoGoCard.jpg)
 
 ---
 
@@ -115,7 +115,7 @@ DevCard é uma aplicação mobile desenvolvida com Expo e React Native que facil
 - Botão "Criar outro cartão" que retorna à tela inicial
 
 **Screenshot:**
-![DevCard Success Screen](assets\images\screenshots\ExpoGoFinalizado.jpg)
+![DevCard Success Screen](assets/images/screenshots/ExpoGoFinalizado.jpg)
 
 ---
 
