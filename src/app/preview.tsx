@@ -73,8 +73,8 @@ export default function Preview() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#E3F2FD', padding: 20, alignItems: 'center' },
-  header: { fontSize: 24, fontWeight: 'bold', marginBottom: 30, color: '#6200EE', marginTop: 20 },
+  container: { flex: 1, backgroundColor: '#E3F2FD', padding: 20, paddingTop: 100, alignItems: 'center' },
+  header: { fontSize: 24, fontWeight: 'bold', marginTop: 10, marginBottom: 30, color: '#6200EE' },
   card: {
     width: '100%',
     borderRadius: 20,

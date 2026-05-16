@@ -36,7 +36,7 @@ export default function Cadastro() {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
+    <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: 40, paddingBottom: 40 }}>
       <Text style={styles.header}>Cadastro</Text>
       <Text style={styles.subHeader}>Preencha seus dados de dev</Text>
 
@@ -79,7 +79,7 @@ export default function Cadastro() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 20 },
+  container: { flex: 1, backgroundColor: '#fff', padding: 20, paddingTop: 40 },
   header: { fontSize: 24, fontWeight: 'bold', color: '#333' },
   subHeader: { fontSize: 16, color: '#666', marginBottom: 20 },
   label: { fontSize: 14, fontWeight: '600', marginBottom: 5, color: '#444' },

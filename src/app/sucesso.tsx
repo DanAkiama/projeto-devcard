@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    paddingTop: 40,
     backgroundColor: '#E3F2FD',
   },
   iconCircle: {
