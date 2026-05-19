@@ -1,94 +1,284 @@
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Button } from "../components/Buttons";
+import { THEME } from "../styles/contants";
+import { Input } from "../components/Input";
+import { ButtonGroupColors } from "../components/ButtonGroupColors";
+import { useState } from "react";
+import { useRouter } from "expo-router";
 
-export default function Cadastro() {
-  const router = useRouter();
+const CARD_COLORS = [
+    {
+      id: "c1",
+      name: "Azul",
+      colorCode: "#4446f0",
+    },
+    {
+      id: "c2",
+      name: "Verde",
+      colorCode: "#4ca35b",
+    },
+    {
+      id: "c3",
+      name: "Roxo",
+      colorCode: "#3f1072",
+    },
+    {
+      id: "c4",
+      name: "Rose",
+      colorCode: "#970957"
+    },
+]
 
-  // Estados para os campos
-  const [nome, setNome] = useState('');
-  const [cargo, setCargo] = useState('');
-  const [empresa, setEmpresa] = useState('');
-  const [experiencia, setExperiencia] = useState('');
-  const [tech, setTech] = useState('');
-  const [cor, setCor] = useState('blue'); // Cor padrão
+export type Form = {
+  fullName: string,
+  role: string,
+  company?: string,
+  experience: number,
+  technology: string,
+  technologies: string,
+  cardColor: string,
+}
 
-  // Função de validação
-  const handleAvancar = () => {
-    if (nome.length < 3) {
-      Alert.alert("Erro", "O nome deve ter pelo menos 3 caracteres.");
-      return;
-    }
-    if (!cargo || !experiencia || !tech) {
-      Alert.alert("Erro", "Preencha todos os campos obrigatórios!");
-      return;
-    }
-    if (Number(experiencia) <= 0) {
-      Alert.alert("Erro", "Anos de experiência deve ser um número maior que zero.");
-      return;
-    }
+type Error = {
+  fullName?: string,
+  role?: string,
+  company?: string,
+  experience?: string,
+  technology?: string,
+  technologies?: string,
+  cardColor?: string,
+}
 
-    // Se estiver certo, ele deve navegar para o Preview passando os dados, professor o/
+export default function CadastroScreen() {
+  const router = useRouter()
+
+  const [form, setForm] = useState<{ data: Form, errors: Error }>({
+    data: {
+      fullName: "",
+      role: "",
+      company: "",
+      experience: 0,
+      technology: "",
+      technologies: "",
+      cardColor: "",
+    },
+    errors: { }
+  })
+
+  function handleSubmit() {
     router.push({
-      pathname: '/preview',
-      params: { nome, cargo, empresa, experiencia, tech, cor }
-    });
-  };
+      pathname: "/preview",
+      params: form.data
+    })
+  }
+
+  function handleInputChange(fieldName: keyof Form, value: string | number) {
+    setForm((currentForm) => {
+      return {
+        ...currentForm,
+        data: {
+          ...currentForm.data,
+          [fieldName]: value
+        }
+      }
+    })
+
+    handleInputValidation(fieldName)
+  }
+
+  function handleInputValidation(field: keyof Form){
+    setForm((currentForm) => {
+      const { fullName, role, experience, technology, technologies } = currentForm.data
+      let error: string | undefined = undefined
+
+      switch(field){
+        case "fullName":
+          if (fullName.length === 0) {
+            error = "Informe o nome completo"
+          } else if (fullName.length < 3) {
+            error = "Informe pelo menos 3 caracteres"
+          }
+          break
+        case "role":
+          if (role.length === 0) {
+            error = "Informe seu cargo"
+          }
+          break
+        case "experience":
+          if (experience < 1) {
+            error = "Você deve ter pelo menos 1 ano de experiência"
+          }
+          break
+        case "technology":
+          if (technology.length === 0) {
+            error = "Informe sua tecnologia favorita"
+          }
+          break
+        case "technologies":
+          if (!technologies || technologies.trim().length === 0) {
+            error = "Informe suas tecnologias separadas por vírgula"
+          }
+          break
+      }
+
+      return {
+        ...currentForm,
+        errors: {
+          ...currentForm.errors,
+          [field]: error
+        }
+      }
+    })
+  }
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: 40, paddingBottom: 40 }}>
-      <Text style={styles.header}>Cadastro</Text>
-      <Text style={styles.subHeader}>Preencha seus dados de dev</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#f8fbff" }}>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={{ paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
+          <View style={styles.container}>
+            {/* Cabeçalho do App */}
+            <View style={styles.headerContainer}>
+              <Text style={styles.title}>Cadastro</Text>
+              <Text style={styles.subtitle}>Preencha seus dados de dev</Text>
+            </View>
 
-      <Text style={styles.label}>Nome Completo *</Text>
-      <TextInput style={styles.input} value={nome} onChangeText={setNome} placeholder="Ex: João Silva" />
+            <View style={{ gap: 12, marginBottom: 16 }}>
+              <Input 
+                onChangeText={(text) => handleInputChange('fullName', text)}
+                label="Nome Completo"
+                placeholder="Daniel Akiama"
+                defaultValue={form.data.fullName}
+                onChange={() => {
+                  handleInputValidation("fullName")
+                }}
+                onBlur={() => {
+                  handleInputValidation("fullName")
+                }}
+                errorMessage={form.errors["fullName"]}
+              />
+              <Input
+                onChangeText={(text) => handleInputChange('role', text)}
+                label="Cargo"
+                placeholder="Desenvolvedor Full Stack"
+                defaultValue={form.data.role}
+                onChange={() => {
+                  handleInputValidation("role")
+                }}
+                onBlur={() => {
+                  handleInputValidation("role")
+                }}
+                errorMessage={form.errors["role"]}
+              />
+              <Input
+                onChangeText={(text) => handleInputChange('company', text)}
+                label="Empresa (opcional)"
+                placeholder="UNIVAG"
+                defaultValue={form.data.company}
+                onChange={() => {
+                  handleInputValidation("company")
+                }}
+                onBlur={() => {
+                  handleInputValidation("company")
+                }}
+                errorMessage={form.errors["company"]}
+              />
+              <Input 
+                onChangeText={(text) => handleInputChange('experience', text ? parseInt(text) : 0)}
+                label="Anos de Experiência"
+                placeholder="4"
+                keyboardType="numeric"
+                defaultValue={form.data.experience ? form.data.experience.toString() : ""}
+                onChange={() => {
+                  handleInputValidation("experience")
+                }}
+                onBlur={() => {
+                  handleInputValidation("experience")
+                }}
+                errorMessage={form.errors["experience"]}
+              />
+              <Input 
+                onChangeText={(text) => handleInputChange('technology', text)}
+                label="Tecnologia Favorita"
+                placeholder="React Native"
+                defaultValue={form.data.technology}
+                onChange={() => {
+                  handleInputValidation("technology")
+                }}
+                onBlur={() => {
+                  handleInputValidation("technology")
+                }}
+                errorMessage={form.errors["technology"]}
+              />
+              <Input 
+                onChangeText={(text) => handleInputChange('technologies', text)}
+                label="Outras Tecnologias (separadas por vírgula)"
+                placeholder="TypeScript, Expo, Node.js"
+                defaultValue={form.data.technologies}
+                onChange={() => {
+                  handleInputValidation("technologies")
+                }}
+                onBlur={() => {
+                  handleInputValidation("technologies")
+                }}
+                errorMessage={form.errors["technologies"]}
+              />
+            </View>
 
-      <Text style={styles.label}>Cargo *</Text>
-      <TextInput style={styles.input} value={cargo} onChangeText={setCargo} placeholder="Ex: Desenvolvedor Mobile" />
-
-      <Text style={styles.label}>Empresa (Opcional)</Text>
-      <TextInput style={styles.input} value={empresa} onChangeText={setEmpresa} placeholder="Ex: Tech Solutions" />
-
-      <Text style={styles.label}>Anos de Experiência *</Text>
-      <TextInput style={styles.input} value={experiencia} onChangeText={setExperiencia} placeholder="Ex: 4" keyboardType="numeric" />
-
-      <Text style={styles.label}>Tecnologia Favorita *</Text>
-      <TextInput style={styles.input} value={tech} onChangeText={setTech} placeholder="Ex: React Native" />
-
-      <Text style={styles.label}>Cor do Cartão</Text>
-      <View style={styles.colorContainer}>
-        <TouchableOpacity style={[styles.colorOption, cor === 'blue' && styles.colorOptionSelected]} onPress={() => setCor('blue')}>
-          <View style={[styles.colorBtn, { backgroundColor: 'blue' }]} />
-          <Text style={styles.colorLabel}>Azul</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.colorOption, cor === 'green' && styles.colorOptionSelected]} onPress={() => setCor('green')}>
-          <View style={[styles.colorBtn, { backgroundColor: 'green' }]} />
-          <Text style={styles.colorLabel}>Verde</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.colorOption, cor === 'purple' && styles.colorOptionSelected]} onPress={() => setCor('purple')}>
-          <View style={[styles.colorBtn, { backgroundColor: 'purple' }]} />
-          <Text style={styles.colorLabel}>Roxo</Text>
-        </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity style={styles.submitBtn} onPress={handleAvancar}>
-        <Text style={styles.submitBtnText}>Gerar Cartão</Text>
-      </TouchableOpacity>
-    </ScrollView>
+            <ButtonGroupColors onSelect={(colorCode) => handleInputChange('cardColor', colorCode)} group={CARD_COLORS} />
+            
+            {/* Rodapé do App */}
+            <View style={styles.footerContainer}>
+              <Button 
+                onPress={handleSubmit}
+                label="Gerar Cartão"
+                disabled={
+                  !form.data.fullName || 
+                  !form.data.role || 
+                  form.data.experience < 1 ||
+                  !form.data.technology ||
+                  !form.data.technologies ||
+                  Object.entries(form.errors).filter(([key, value]) => !!value).length > 0
+                }
+              />
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 20, paddingTop: 40 },
-  header: { fontSize: 24, fontWeight: 'bold', color: '#333' },
-  subHeader: { fontSize: 16, color: '#666', marginBottom: 20 },
-  label: { fontSize: 14, fontWeight: '600', marginBottom: 5, color: '#444' },
-  input: { borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, marginBottom: 15, fontSize: 16 },
-  colorContainer: { flexDirection: 'row', gap: 12, marginBottom: 30, justifyContent: 'space-between' },
-  colorOption: { flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1, borderWidth: 2, borderColor: '#ddd', borderRadius: 8, paddingHorizontal: 14, paddingVertical: 12 },
-  colorOptionSelected: { borderColor: '#6200EE', backgroundColor: '#f5f0ff', elevation: 3 },
-  colorBtn: { width: 24, height: 24, borderRadius: 12, borderWidth: 1, borderColor: '#999' },
-  colorLabel: { fontSize: 14, fontWeight: '600', color: '#444' },
-  submitBtn: { backgroundColor: '#6200EE', padding: 15, borderRadius: 8, alignItems: 'center' },
-  submitBtnText: { color: '#fff', fontSize: 18, fontWeight: 'bold' }
+  container: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignContent: "center",
+    paddingHorizontal: 24,
+    gap: 10,
+  },
+  headerContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    gap: 4,
+  },
+  title: {
+    color: THEME.colors.heading,
+    fontSize: THEME.text.heading.h3,
+    fontWeight: "bold",
+    textAlign: "center",
+    paddingTop: 22,
+  },
+  footerContainer: {
+    flexDirection: "column",
+    gap: 12,
+    marginTop: 20,
+  },
+  subtitle: {
+    color: THEME.colors.subtitle,
+    fontSize: 16,
+    fontWeight: "400",
+    textAlign: "center",
+  },
 });

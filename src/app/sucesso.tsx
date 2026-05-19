@@ -1,75 +1,94 @@
-import { useRouter } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { THEME } from "../styles/contants";
+import { Button } from "../components/Buttons";
+import { useRouter } from "expo-router";
 
-export default function Sucesso() {
-  const router = useRouter();
+export default function SucessoScreen() {
+  const router = useRouter()
 
   return (
-    <View style={styles.container}>
-      <View style={styles.iconCircle}>
-        <Text style={styles.iconText}>✓</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#f8fbff" }}>
+      <View style={styles.container}>
+        {/* Informações de Apresentação da Tela Sucesso */}
+        <View style={styles.headerContainer}>
+          <View style={styles.successBadgeContainer}>
+            <View style={styles.successBadgeCircle}>
+              <Text style={styles.successBadgeIcon}>✓</Text>
+            </View>
+          </View>
+          
+          <Text style={styles.title}>Cartão criado com sucesso!</Text>
+          <Text style={styles.subtitle}>Seu cartão de visita digital está pronto. Compartilhe com a galera!</Text>
+        </View>
+
+        <View style={styles.footerContainer}>
+          <Button label="Criar outro cartão" onPress={() => router.replace('/')} />
+        </View>
       </View>
-
-      <Text style={styles.title}>Parabéns!</Text>
-      <Text style={styles.subtitle}>
-        O seu DevCard foi gerado e está pronto para ser partilhado com o mundo e o professor Brendo Vale.
-      </Text>
-
-      <TouchableOpacity 
-        style={styles.button} 
-        onPress={() => router.replace('/')}
-      >
-        <Text style={styles.buttonText}>Criar outro cartão</Text>
-      </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: "column",
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    paddingTop: 40,
-    backgroundColor: '#E3F2FD',
+    justifyContent: "space-between",
+    paddingHorizontal: 25,
+    paddingBottom: 40,
   },
-  iconCircle: {
-    width: 100,
+
+  headerContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    gap: 16,
+  },
+
+  successBadgeContainer: {
+    backgroundColor: "rgba(16, 172, 132, 0.15)",
+    padding: 10,
+    borderRadius: 60,
+    marginBottom: 8,
+  },
+
+  successBadgeCircle: {
+    backgroundColor: "#10ac84",
     height: 100,
+    width: 100,
     borderRadius: 50,
-    backgroundColor: '#4CAF50',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 30,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  iconText: {
-    color: '#fff',
+
+  successBadgeIcon: {
+    color: "#ffffff",
     fontSize: 50,
-    fontWeight: 'bold',
+    fontWeight: "bold",
+    lineHeight: 55,
   },
+
   title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#6200EE',
-    marginBottom: 10,
+    color: THEME.colors.heading,
+    fontSize: THEME.text.heading.h3,
+    fontWeight: "bold",
+    textAlign: "center",
+    width: 250,
   },
+
   subtitle: {
+    color: THEME.colors.subtitle,
     fontSize: 16,
-    textAlign: 'center',
-    color: '#444',
-    marginBottom: 40,
-    lineHeight: 24,
+    fontWeight: "400",
+    width: 250,
+    textAlign: "center",
+    lineHeight: 22,
   },
-  button: {
-    backgroundColor: '#6200EE',
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 12,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
+
+  footerContainer: {
+    flexDirection: "column",
+    gap: 12,
   },
 });

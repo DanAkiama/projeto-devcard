@@ -1,67 +1,80 @@
-import { useRouter } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { THEME } from "../styles/contants";
+import { Button } from "../components/Buttons";
+import { useRouter } from "expo-router";
 
-export default function Welcome() {
-  const router = useRouter();
+export default function HomeScreen() {
+  const router = useRouter()
 
   return (
-    <View style={styles.container}>
-      <View style={styles.contentCenter}>
-        <Text style={styles.title}>DevCard</Text>
-        <Text style={styles.subtitle}>
-          Seu cartão de visita digital de dev mobile
-        </Text>
-      </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#f8fbff" }}>
+      <View style={styles.container}>
+        {/* Header Superior com Botão Sobre */}
+        <View style={styles.topHeader}>
+          <TouchableOpacity onPress={() => router.push("/sobre")} style={styles.aboutButton}>
+            <Text style={styles.aboutButtonText}>Sobre o App</Text>
+          </TouchableOpacity>
+        </View>
 
-      <TouchableOpacity 
-        style={styles.button} 
-        onPress={() => router.push('/cadastro')}
-      >
-        <Text style={styles.buttonText}>Criar meu cartão</Text>
-      </TouchableOpacity>
-    </View>
+        {/* Informações de Apresentação da Tela Home */}
+        <View style={styles.headerContainer}>
+          <Text style={styles.titleLogo}>DevCard</Text>
+          <Text style={styles.subtitle}>
+            Seu cartão de visita digital de dev mobile
+          </Text>
+        </View>
+
+        {/* Botão da Tela Home */}
+        <Button label="Criar meu cartão" onPress={() => router.push("/cadastro")} />
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: "column",
     flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#E3F2FD', 
+    justifyContent: "space-between",
+    paddingHorizontal: 25,
+    paddingBottom: 40,
   },
-  contentCenter: {
+  topHeader: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    paddingTop: 10,
+  },
+  aboutButton: {
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: THEME.border.radius.md,
+    borderWidth: 1.5,
+    borderColor: THEME.colors.primary,
+  },
+  aboutButtonText: {
+    color: THEME.colors.primary,
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+  headerContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    gap: 8,
   },
-  title: {
-    fontSize: 56,
-    fontWeight: 'bold',
-    color: '#6200EE',
-    marginBottom: 10,
+  titleLogo: {
+    color: THEME.colors.primary,
+    fontSize: 50,
+    fontWeight: "bold",
   },
   subtitle: {
-    fontSize: 18,
-    textAlign: 'center',
-    color: '#444',
-    marginBottom: 40,
-    maxWidth: '80%',
-  },
-  button: {
-    backgroundColor: '#6200EE', 
-    paddingVertical: 15,
-    paddingHorizontal: 60,
-    borderRadius: 12,
-    elevation: 3, 
-    marginBottom: 40,
-    width: '90%',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
+    color: THEME.colors.subtitle,
     fontSize: 16,
-    fontWeight: 'bold',
-  },
+    fontWeight: "400",
+    width: 200,
+    textAlign: "center",
+  }
 });

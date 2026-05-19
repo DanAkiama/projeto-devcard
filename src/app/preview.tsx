@@ -1,115 +1,75 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Clipboard, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Button } from "../components/Buttons";
+import { THEME } from "../styles/contants";
+import { DevCard } from "../components/DevCard";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { Form } from "./cadastro";
 
-export default function Preview() {
-  const router = useRouter();
-  const params = useLocalSearchParams();
+export default function PreviewScreen() {
+  const router = useRouter()
+  const params = useLocalSearchParams() as unknown as Form
 
-  const anos = Number(params.experiencia);
-  let nivel = "";
-  let corNivel = "";
+  function handleShare() {
+    if (!params) return;
+    
+    const badgeLabel = Number(params.experience) <= 2 ? "Júnior" : Number(params.experience) <= 5 ? "Pleno" : "Sênior";
+    const formattedData = `--- DevCard de ${params.fullName} ---
+Cargo: ${params.role}
+${params.company ? `Empresa: ${params.company}\n` : ""}Anos de Experiência: ${params.experience} ${Number(params.experience) === 1 ? "ano" : "anos"} (${badgeLabel})
+Tecnologia Favorita: ${params.technology}
+Outras Tecnologias: ${params.technologies}
+`;
 
-  if (anos <= 2) {
-    nivel = "Júnior";
-    corNivel = "#B0BEC5";
-  } else if (anos <= 5) {
-    nivel = "Pleno";
-    corNivel = "#2196F3"; 
-  } else {
-    nivel = "Sênior";
-    corNivel = "#FFD700"; 
+    Clipboard.setString(formattedData);
+    Alert.alert("Sucesso!", "Dados do seu cartão foram copiados para a área de transferência!");
   }
 
-  const cores: any = {
-    blue: '#1976D2',
-    green: '#388E3C',
-    purple: '#7B1FA2'
-  };
-  const corFundoCartao = cores[params.cor as string] || cores.blue;
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Seu Cartão</Text>
-
-      {/* Cartão de Visita */}
-      <View style={[styles.card, { backgroundColor: corFundoCartao }]}>
-        <View style={styles.avatar}>
-          <Text style={styles.avatarText}>{params.nome?.toString()[0]}</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#f8fbff" }}>
+      <View style={styles.container}>
+        {/* Cabeçalho do App */}
+        <View style={styles.headerContainer}>
+          <Text style={styles.title}>Seu cartão</Text>
         </View>
 
-        <Text style={styles.cardNome}>{params.nome}</Text>
-        <Text style={styles.cardCargo}>{params.cargo}</Text>
-        
-        {params.empresa ? (
-          <Text style={styles.cardEmpresa}>🏢 {params.empresa}</Text>
-        ) : null}
+        {!!params && <DevCard data={params} />}
 
-        <Text style={styles.cardTech}>Especialista em {params.tech}</Text>
-
-        {/* Badge de Nível */}
-        <View style={[styles.badge, { backgroundColor: corNivel }]}>
-          <Text style={styles.badgeText}>{nivel}</Text>
+        {/* Rodapé do App */}
+        <View style={styles.footerContainer}>
+          <Button label="Compartilhar" variant="secondary" onPress={handleShare} />
+          <Button label="Editar dados" variant="outline" onPress={() => router.back()} />
+          <Button label="Finalizar" onPress={() => router.replace("/sucesso")} />
         </View>
       </View>
-
-      {/* Botões de Ação */}
-      <View style={styles.footer}>
-        <TouchableOpacity 
-          style={styles.backButton} 
-          onPress={() => router.back()}
-        >
-          <Text style={styles.backButtonText}>Editar dados</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-          style={styles.finalBtn} 
-          onPress={() => router.replace('/sucesso')}
-        >
-          <Text style={styles.finalBtnText}>Finalizar</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#E3F2FD', padding: 20, paddingTop: 100, alignItems: 'center' },
-  header: { fontSize: 24, fontWeight: 'bold', marginTop: 10, marginBottom: 30, color: '#6200EE' },
-  card: {
-    width: '100%',
-    borderRadius: 20,
-    padding: 25,
-    alignItems: 'center',
-    elevation: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
+  container: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignContent: "center",
+    paddingHorizontal: 24,
+    gap: 15,
   },
-  avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: 'rgba(255,255,255,0.3)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 15,
+  headerContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    gap: 16,
   },
-  avatarText: { fontSize: 40, fontWeight: 'bold', color: '#fff' },
-  cardNome: { fontSize: 22, fontWeight: 'bold', color: '#fff', marginBottom: 5 },
-  cardCargo: { fontSize: 16, color: '#eee', marginBottom: 5 },
-  cardEmpresa: { fontSize: 14, color: '#ddd', marginBottom: 15 },
-  cardTech: { fontSize: 16, fontWeight: '600', color: '#fff', marginTop: 10 },
-  badge: {
-    marginTop: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-    borderRadius: 20,
+  title: {
+    color: THEME.colors.heading,
+    fontSize: THEME.text.heading.h3,
+    fontWeight: "bold",
+    textAlign: "center",
+    paddingTop: 22,
   },
-  badgeText: { fontWeight: 'bold', color: '#333' },
-  footer: { width: '100%', marginTop: 40, gap: 15 },
-  finalBtn: { backgroundColor: '#6200EE', padding: 15, borderRadius: 12, alignItems: 'center' },
-  finalBtnText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
-  backButton: { padding: 15, alignItems: 'center' },
-  backButtonText: { color: '#6200EE', fontWeight: '600' }
+  footerContainer: {
+    flexDirection: "column",
+    gap: 12,
+    marginTop: 10,
+  },
 });
