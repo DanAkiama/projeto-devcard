@@ -28,14 +28,12 @@ Outras Tecnologias: ${params.technologies}
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f8fbff" }}>
       <View style={styles.container}>
-        {/* Cabeçalho do App */}
         <View style={styles.headerContainer}>
           <Text style={styles.title}>Seu cartão</Text>
         </View>
 
         {!!params && <DevCard data={params} />}
 
-        {/* Rodapé do App */}
         <View style={styles.footerContainer}>
           <Button label="Compartilhar" variant="secondary" onPress={handleShare} />
           <Button label="Editar dados" variant="outline" onPress={() => router.back()} />

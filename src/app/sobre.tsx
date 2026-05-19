@@ -10,7 +10,6 @@ export default function SobreScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f8fbff" }}>
       <View style={styles.container}>
-        {/* Cabeçalho */}
         <View style={styles.headerContainer}>
           <Text style={styles.titleLogo}>Sobre o DevCard</Text>
           <Text style={styles.subtitle}>
@@ -18,7 +17,6 @@ export default function SobreScreen() {
           </Text>
         </View>
 
-        {/* Informações do App */}
         <View style={styles.infoContainer}>
           <Text style={styles.description}>
             O <Text style={{ fontWeight: "bold", color: THEME.colors.primary }}>DevCard</Text> é um aplicativo interativo feito para desenvolvedores mobile criarem, visualizarem e compartilharem seus cartões de visita digitais de forma personalizada e rápida.
@@ -49,7 +47,6 @@ export default function SobreScreen() {
           </View>
         </View>
 
-        {/* Botão de Retorno */}
         <View style={styles.footerContainer}>
           <Button label="Voltar ao início" onPress={() => router.back()} />
         </View>

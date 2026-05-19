@@ -47,7 +47,6 @@ export function DevCard({ data }: Props){
       : [];
 
     return (
-        // Cartão do Usuário
         <View style={[styles.cardContainer, {backgroundColor: data.cardColor || "#4446f0"}]} >
             <View style={styles.cardAvatarContainer}>
                 <View style={styles.cardAvatarSubContainer}>

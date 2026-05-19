@@ -16,7 +16,6 @@ export function Button({ label, variant = "primary", onPress, disabled = false }
         onPress(event)
     }
     return (
-        // Botão de Criação de Cartão
         <TouchableOpacity onPress={handleOnPress} style={[
             styles[variant].buttonContainer,
             disabled && {opacity: 0.5}

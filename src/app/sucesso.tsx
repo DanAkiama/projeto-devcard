@@ -10,7 +10,6 @@ export default function SucessoScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f8fbff" }}>
       <View style={styles.container}>
-        {/* Informações de Apresentação da Tela Sucesso */}
         <View style={styles.headerContainer}>
           <View style={styles.successBadgeContainer}>
             <View style={styles.successBadgeCircle}>

@@ -137,7 +137,6 @@ export default function CadastroScreen() {
       <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={{ paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
-            {/* Cabeçalho do App */}
             <View style={styles.headerContainer}>
               <Text style={styles.title}>Cadastro</Text>
               <Text style={styles.subtitle}>Preencha seus dados de dev</Text>
@@ -227,7 +226,6 @@ export default function CadastroScreen() {
 
             <ButtonGroupColors onSelect={(colorCode) => handleInputChange('cardColor', colorCode)} group={CARD_COLORS} />
             
-            {/* Rodapé do App */}
             <View style={styles.footerContainer}>
               <Button 
                 onPress={handleSubmit}

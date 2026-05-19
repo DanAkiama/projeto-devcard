@@ -10,14 +10,12 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f8fbff" }}>
       <View style={styles.container}>
-        {/* Header Superior com Botão Sobre */}
         <View style={styles.topHeader}>
           <TouchableOpacity onPress={() => router.push("/sobre")} style={styles.aboutButton}>
             <Text style={styles.aboutButtonText}>Sobre o App</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Informações de Apresentação da Tela Home */}
         <View style={styles.headerContainer}>
           <Text style={styles.titleLogo}>DevCard</Text>
           <Text style={styles.subtitle}>
@@ -25,7 +23,6 @@ export default function HomeScreen() {
           </Text>
         </View>
 
-        {/* Botão da Tela Home */}
         <Button label="Criar meu cartão" onPress={() => router.push("/cadastro")} />
       </View>
     </SafeAreaView>
